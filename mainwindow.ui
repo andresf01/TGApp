@@ -79,28 +79,28 @@
       </property>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="1">
-        <widget class="QRadioButton" name="radioButton_4">
+        <widget class="QRadioButton" name="isUHD">
          <property name="text">
           <string>Ultra High Definition</string>
          </property>
         </widget>
        </item>
        <item row="0" column="2">
-        <widget class="QRadioButton" name="radioButton">
+        <widget class="QRadioButton" name="isLSS">
          <property name="text">
           <string>Lossless</string>
          </property>
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QRadioButton" name="radioButton_2">
+        <widget class="QRadioButton" name="isBWL">
          <property name="text">
           <string>Bandwith Limited</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QRadioButton" name="radioButton_3">
+        <widget class="QRadioButton" name="isRT">
          <property name="text">
           <string>Real Time</string>
          </property>

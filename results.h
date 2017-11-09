@@ -14,7 +14,7 @@ class Results : public QDialog
 public:
     explicit Results(QWidget *parent = 0);
     ~Results();
-    void getParameters(int input);
+    void getParameters(int input, int env);
 
 private:
     Ui::Results *ui;

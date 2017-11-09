@@ -32,10 +32,12 @@ void MainWindow::on_actionExit_triggered()
 }
 
 // Binary model to represent three options choose
-// Seven possibilites (001,010,011,100,101,110,111)
+// Seven possibilites (001,010,011,100,101,110,111) for codec
+// Four possibilities (0,1,2,3) for environment
 void MainWindow::on_getParameters_clicked()
 {
     int input = 0;
+    int env = 0;
     if (ui->isVP9->isChecked())
     {
         input += 100;
@@ -48,9 +50,27 @@ void MainWindow::on_getParameters_clicked()
     {
         input += 1;
     }
+
+    if (ui->isRT->isChecked())
+    {
+        env = 0;
+    }
+    if (ui->isBWL->isChecked())
+    {
+        env = 1;
+    }
+    if (ui->isLSS->isChecked())
+    {
+        env = 2;
+    }
+    if (ui->isUHD->isChecked())
+    {
+        env = 3;
+    }
+
     // QString a = QString::number(input);
     // ui->getParameters->setText(a);
     Results *results = new Results;
-    results->getParameters(input);
+    results->getParameters(input, env);
     results->show();
 }
