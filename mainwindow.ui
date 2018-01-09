@@ -156,6 +156,8 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionExport_as_sh"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -192,6 +194,11 @@
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionExport_as_sh">
+   <property name="text">
+    <string>Export as sh</string>
    </property>
   </action>
  </widget>

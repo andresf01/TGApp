@@ -36,8 +36,15 @@ void MainWindow::on_actionExit_triggered()
 // Four possibilities (0,1,2,3) for environment
 void MainWindow::on_getParameters_clicked()
 {
+    // QString a = QString::number(input);
+    // ui->getParameters->setText(a);
+    Results *results = new Results;
+    results->setParameters(get_codec_ui(), get_env_ui());
+    results->show();
+}
+
+int MainWindow::get_codec_ui(){
     int input = 0;
-    int env = 0;
     if (ui->isVP9->isChecked())
     {
         input += 100;
@@ -50,7 +57,11 @@ void MainWindow::on_getParameters_clicked()
     {
         input += 1;
     }
+    return input;
+}
 
+int MainWindow::get_env_ui(){
+    int env = -1;
     if (ui->isRT->isChecked())
     {
         env = 0;
@@ -67,10 +78,11 @@ void MainWindow::on_getParameters_clicked()
     {
         env = 3;
     }
+    return env;
+}
 
-    // QString a = QString::number(input);
-    // ui->getParameters->setText(a);
+void MainWindow::on_actionExport_as_sh_triggered()
+{
     Results *results = new Results;
-    results->getParameters(input, env);
-    results->show();
+    results->getParametersFile(get_codec_ui(), get_env_ui());
 }
