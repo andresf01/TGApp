@@ -85,13 +85,13 @@ QString Results::getBwlHM(int what){
     QString value = "";
     switch(what){
         case 1:
-            value = "TAppEncoderStatic";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_intra_high_throughput_rext.cfg --TargetBitrate 500 -o ./${NAME}.yuv -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}.txt";
             break;
         case 2:
-            value = "TAppEncoderStatic";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_P_main.cfg -o ./${NAME}.yuv -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}.txt";
             break;
         case 3:
-            value = "TAppEncoderStatic";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main.cfg -o ./${NAME}.yuv -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}.txt";
             break;
         default:
             break;
@@ -126,16 +126,16 @@ QString Results::getBwlTG(int what){
     QString value = "";
     switch(what){
         case 1:
-            value = "turing --speed medium --qp 16 --bitrate 500 --rdoq --min-cu 16";
+            value = "turing encode --speed medium --qp 16 --bitrate 500 --rdoq --min-cu 16";
             break;
         case 2:
-            value = "turing --speed medium --qp 32 --bitrate 500 --rdoq";
+            value = "turing encode --speed medium --qp 32 --bitrate 500 --rdoq";
             break;
         case 3:
-            value = "turing --speed slow --qp 16 --bitrate 500 --tskip --min-cu 16";
+            value = "turing encode --speed slow --qp 16 --bitrate 500 --tskip --min-cu 16";
             break;
         case 4:
-            value = "turing --speed slow --qp 32 --bitrate 500 --tskip";
+            value = "turing encode --speed slow --qp 32 --bitrate 500 --tskip";
             break;
         default:
             break;
@@ -149,10 +149,10 @@ QString Results::getUhdHM(int what){
     QString value = "";
     switch(what){
         case 1:
-            value = "TAppEncoderStatic";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main.cfg -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}.txt";
             break;
         case 2:
-            value = "TAppEncoderStatic";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main.cfg --IntraPeriod 16 -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}.txt";
             break;
         default:
             break;
@@ -170,10 +170,10 @@ QString Results::getUhdTG(int what){
     QString value = "";
     switch(what){
         case 1:
-            value = "turing";
+            value = "turing encode --speed medium -qp 32 --min-cu 16";
             break;
         case 2:
-            value = "turing";
+            value = "turing encode --speed medium -qp 32 --min-cu 16 --rdoq --tskip";
             break;
         default:
             break;
@@ -187,13 +187,13 @@ QString Results::getLssHM(int what){
     QString value = "";
     switch(what){
         case 1:
-            value = "TAppEncoderStatic";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main.cfg --TransquantBypassEnable true --CUTransquantBypassFlagForce true -o ./${NAME}.yuv -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}.txt";
             break;
         case 2:
-            value = "TAppEncoderStatic";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main10.cfg --TransquantBypassEnable true --CUTransquantBypassFlagForce true -o ./${NAME}.yuv -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}.txt";
             break;
         case 3:
-            value = "TAppEncoderStatic";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main_rext.cfg --TransquantBypassEnable true --CUTransquantBypassFlagForce true -o ./${NAME}.yuv -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}.txt";
             break;
         default:
             break;
@@ -206,13 +206,13 @@ QString Results::getLssVPX(int what){
     QString value = "";
     switch(what){
         case 1:
-            value = "vpxenc --codec=vp9 ";
+            value = "vpxenc --codec=vp9 --psnr -o ./${NAME}_${PRESET}.webm --lossless='1'' --best ./$NAME.y4m 2> ./${NAME}_${PRESET}.txt";
             break;
         case 2:
-            value = "vpxenc --codec=vp9 ";
+            value = "vpxenc --codec=vp9 --psnr -o ./${NAME}_lss2.webm --lossless='1' --good --max-q='32' ./$NAME.y4m 2> ./$NAME.txt";
             break;
         case 3:
-            value = "vpxenc --codec=vp9 ";
+            value = "vpxenc --codec=vp9 --psnr -o ./${NAME}_lss3.webm --lossless='1' --best --max-q='32' --kf-max-dist='4' ./$NAME.y4m 2> ./$NAME.txt";
             break;
         default:
             break;
