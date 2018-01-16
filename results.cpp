@@ -236,8 +236,36 @@ void Results::writeFile(QString filename, QString data){
 }
 
 void Results::getParametersFile(int input, int env){
-    QString header = "";
-    QString footer = "";
+
+    QString header = "#!/bin/bash\n"
+    "function funcion()\n"
+    "{\n"
+    " declare -A videos=( [\"Netflix_Boat_4096x2160_60fps_10bit_420\"]=\"300\" [\"Netflix_BoxingPractice_4096x2160_60fps_10bit_420\"]=\"254\" [\"Netflix_Crosswalk_4096x2160_60fps_10bit_420\"]=\"300\" [\"Netflix_FoodMarket2_4096x2160_60fps_10bit_420 \"]=\"300\" [\"Netflix_FoodMarket_4096x2160_60fps_10bit_420\"]=\"600\" [\"Netflix_Narrator_4096x2160_60fps_10bit_420\"]=\"300\" [\"Netflix_RitualDance_4096x2160_60fps_10bit_420 \"]=\"600\" [\"Netflix_SquareAndTimelapse_4096x2160_60fps_10bit_420\"]=\"600\" [\"Netflix_Tango_4096x2160_60fps_10bit_420\"]=\"294\" [\"Netflix_TunnelFlag_4096x2160_60fps_10bit_420\"]=\"600\" )\n"
+    " PRESET=\"";
+    QString body = "\"\n"
+    " # DIMENSIONS\n"
+    " # Width\n"
+    " wdt=$( cat $1 | head -1 | tr -s \" \" \"\\n\" | head -2 | tail -1 )\n"
+    " wdt=\"${wdt:1:$((${#wdt}-1))}\"\n"
+    " # Height\n"
+    " hgt=$( cat $1 | head -1 | tr -s \" \" \"\\n\" | head -3 | tail -1 )\n"
+    " hgt=\"${hgt:1:$((${#hgt}-1))}\"\n"
+    " # FRAME RATE\n"
+    " # Numerator\n"
+    " numerator=$( cat $1 | head -1 | tr -s \" \" \"\\n\" | head -4 | tail -1 | tr -s \":\" \"\\n\" | head -1 )\n"
+    " numerator=\"${numerator:1:$((${#numerator}-1))}\"\n"
+    " # Denominator\n"
+    " denominator=$( cat $1 | head -1 | tr -s \" \" \"\\n\" | head -4 | tail -1 | tr -s \":\" \"\\n\" | tail -1 )\n"
+    " framerate=$(( ${numerator}/${denominator} ))\n"
+    " # turing encode\n"
+    " NAME=$( echo $1 | tr -s \".\" \"\\n\" | head -1 )\n"
+    " length=${videos[${NAME}]}\n";
+    QString footer = " --frame-rate ${framerate} --frames ${length} --input-res ${wdt}x${hgt} -o ${NAME}_${PRESET}.bit ${NAME}.y4m > ./${NAME}_${PRESET}_";
+    QString final = ".txt\n"
+    "}\n"
+    "for i in $( ls *.y4m );\n"
+    " do funcion ${i};\n"
+    "done";
     QString buff = "";
     // Write specific settings for an environment
 //    writeFile("archivo.txt","datos");
@@ -245,25 +273,25 @@ void Results::getParametersFile(int input, int env){
     {
         if (env == 0){
             for (int var = 0; var < 3; ++var) {
-                writeFile("hmrt"+QString::number(var)+".sh",header+getRtHM(var + 1)+footer);
+                writeFile("hmrt"+QString::number(var)+".sh",header+"rt"+QString::number(var + 1)+body+getRtHM(var + 1)+footer+"hm"+final);
             }
             // ui->textHM->setText(hmrt);
         }
         if (env == 1){
             for (int var = 0; var < 3; ++var) {
-                writeFile("hmbwl"+QString::number(var)+".sh",header+getBwlHM(var + 1)+footer);
+                writeFile("hmbwl"+QString::number(var)+".sh",header+"bwl"+QString::number(var + 1)+body+getBwlHM(var + 1)+footer+"hm"+final);
             }
             // ui->textHM->setText(hmbwl);
         }
         if (env == 2){
             for (int var = 0; var < 3; ++var) {
-                writeFile("hmlss"+QString::number(var)+".sh",header+getLssHM(var + 1)+footer);
+                writeFile("hmlss"+QString::number(var)+".sh",header+"lss"+QString::number(var + 1)+body+getLssHM(var + 1)+footer+"hm"+final);
             }
             // ui->textHM->setText(hmlss);
         }
         if (env == 3){
             for (int var = 0; var < 2; ++var) {
-                writeFile("hmuhd"+QString::number(var)+".sh",header+getUhdHM(var + 1)+footer);
+                writeFile("hmuhd"+QString::number(var)+".sh",header+"uhd"+QString::number(var + 1)+body+getUhdHM(var + 1)+footer+"hm"+final);
             }
             // ui->textHM->setText(hmuhd);
         }
@@ -272,13 +300,13 @@ void Results::getParametersFile(int input, int env){
     {
         if (env == 0){
             for (int var = 0; var < 4; ++var) {
-                writeFile("tgrt"+QString::number(var)+".sh",header+getRtTG(var + 1)+footer);
+                writeFile("tgrt"+QString::number(var)+".sh",header+"rt"+QString::number(var + 1)+body+getRtTG(var + 1)+footer+"tg"+final);
             }
             // ui->textTuring->setText(tgrt);
         }
         if (env == 1){
             for (int var = 0; var < 4; ++var) {
-                writeFile("tgbwl"+QString::number(var)+".sh",header+getBwlTG(var + 1)+footer);
+                writeFile("tgbwl"+QString::number(var)+".sh",header+"bwl"+QString::number(var + 1)+body+getBwlTG(var + 1)+footer+"tg"+final);
             }
             // ui->textTuring->setText(tgbwl);
         }
@@ -288,7 +316,7 @@ void Results::getParametersFile(int input, int env){
         }
         if (env == 3){
             for (int var = 0; var < 2; ++var) {
-                writeFile("tguhd"+QString::number(var)+".sh",header+getUhdTG(var + 1)+footer);
+                writeFile("tguhd"+QString::number(var)+".sh",header+"uhd"+QString::number(var + 1)+body+getUhdTG(var + 1)+footer+"tg"+final);
             }
             // ui->textTuring->setText(tguhd);
         }
@@ -298,10 +326,10 @@ void Results::getParametersFile(int input, int env){
         if (env == 0)
         {
             for (int var = 0; var < 3; ++var) {
-                writeFile("hmrt"+QString::number(var)+".sh",header+getRtHM(var + 1)+footer);
+                writeFile("hmrt"+QString::number(var)+".sh",header+"rt"+QString::number(var + 1)+body+getRtHM(var + 1)+footer+"hm"+final);
             }
             for (int var = 0; var < 4; ++var) {
-                writeFile("tgrt"+QString::number(var)+".sh",header+getRtTG(var + 1)+footer);
+                writeFile("tgrt"+QString::number(var)+".sh",header+"rt"+QString::number(var + 1)+body+getRtTG(var + 1)+footer+"tg"+final);
             }
             // ui->textHM->setText(hmrt);
             // ui->textTuring->setText(tgrt);
@@ -309,10 +337,10 @@ void Results::getParametersFile(int input, int env){
         if (env == 1)
         {
             for (int var = 0; var < 3; ++var) {
-                writeFile("hmbwl"+QString::number(var)+".sh",header+getBwlHM(var + 1)+footer);
+                writeFile("hmbwl"+QString::number(var)+".sh",header+"bwl"+QString::number(var + 1)+body+getBwlHM(var + 1)+footer+"hm"+final);
             }
             for (int var = 0; var < 4; ++var) {
-                writeFile("tgbwl"+QString::number(var)+".sh",header+getBwlTG(var + 1)+footer);
+                writeFile("tgbwl"+QString::number(var)+".sh",header+"bwl"+QString::number(var + 1)+body+getBwlTG(var + 1)+footer+"tg"+final);
             }
             // ui->textHM->setText(hmbwl);
             // ui->textTuring->setText(tgbwl);
@@ -320,7 +348,7 @@ void Results::getParametersFile(int input, int env){
         if (env == 2)
         {
             for (int var = 0; var < 3; ++var) {
-                writeFile("hmlss"+QString::number(var)+".sh",header+getLssHM(var + 1)+footer);
+                writeFile("hmlss"+QString::number(var)+".sh",header+"lss"+QString::number(var + 1)+body+getLssHM(var + 1)+footer+"hm"+final);
             }
             // ui->textHM->setText(hmlss);
             // ui->textTuring->setText(tglss);
@@ -328,10 +356,10 @@ void Results::getParametersFile(int input, int env){
         if (env == 3)
         {
             for (int var = 0; var < 2; ++var) {
-                writeFile("hmuhd"+QString::number(var)+".sh",header+getUhdHM(var + 1)+footer);
+                writeFile("hmuhd"+QString::number(var)+".sh",header+"uhd"+QString::number(var + 1)+body+getUhdHM(var + 1)+footer+"hm"+final);
             }
             for (int var = 0; var < 2; ++var) {
-                writeFile("tguhd"+QString::number(var)+".sh",header+getUhdTG(var + 1)+footer);
+                writeFile("tguhd"+QString::number(var)+".sh",header+"uhd"+QString::number(var + 1)+body+getUhdTG(var + 1)+footer+"tg"+final);
             }
             // ui->textHM->setText(hmuhd);
             // ui->textTuring->setText(tguhd);
@@ -342,19 +370,19 @@ void Results::getParametersFile(int input, int env){
     {
         if (env == 0){
             for (int var = 0; var < 4; ++var) {
-                writeFile("vpxrt"+QString::number(var)+".sh",header+getRtVPX(var + 1)+footer);
+                writeFile("vpxrt"+QString::number(var)+".sh",header+"rt"+QString::number(var + 1)+body+getRtVPX(var + 1)+footer+"vp9"+final);
             }
             // ui->textVP9->setText(vp9rt);
         }
         if (env == 1){
             for (int var = 0; var < 4; ++var) {
-                writeFile("vpxbwl"+QString::number(var)+".sh",header+getBwlVPX(var + 1)+footer);
+                writeFile("vpxbwl"+QString::number(var)+".sh",header+"bwl"+QString::number(var + 1)+body+getBwlVPX(var + 1)+footer+"vp9"+final);
             }
             // ui->textVP9->setText(vp9bwl);
         }
         if (env == 2){
             for (int var = 0; var < 3; ++var) {
-                writeFile("vpxlss"+QString::number(var)+".sh",header+getLssVPX(var + 1)+footer);
+                writeFile("vpxlss"+QString::number(var)+".sh",header+"lss"+QString::number(var + 1)+body+getLssVPX(var + 1)+footer+"vp9"+final);
             }
             // ui->textVP9->setText(vp9lss);
         }
@@ -368,10 +396,10 @@ void Results::getParametersFile(int input, int env){
         if (env == 0)
         {
             for (int var = 0; var < 3; ++var) {
-                writeFile("hmrt"+QString::number(var)+".sh",header+getRtHM(var + 1)+footer);
+                writeFile("hmrt"+QString::number(var)+".sh",header+"rt"+QString::number(var + 1)+body+getRtHM(var + 1)+footer+"hm"+final);
             }
             for (int var = 0; var < 4; ++var) {
-                writeFile("vpxrt"+QString::number(var)+".sh",header+getRtVPX(var + 1)+footer);
+                writeFile("vpxrt"+QString::number(var)+".sh",header+"rt"+QString::number(var + 1)+body+getRtVPX(var + 1)+footer+"vp9"+final);
             }
             // ui->textHM->setText(hmrt);
             // ui->textVP9->setText(vp9rt);
@@ -379,10 +407,10 @@ void Results::getParametersFile(int input, int env){
         if (env == 1)
         {
             for (int var = 0; var < 3; ++var) {
-                writeFile("hmbwl"+QString::number(var)+".sh",header+getBwlHM(var + 1)+footer);
+                writeFile("hmbwl"+QString::number(var)+".sh",header+"bwl"+QString::number(var + 1)+body+getBwlHM(var + 1)+footer+"hm"+final);
             }
             for (int var = 0; var < 4; ++var) {
-                writeFile("vpxbwl"+QString::number(var)+".sh",header+getBwlVPX(var + 1)+footer);
+                writeFile("vpxbwl"+QString::number(var)+".sh",header+"bwl"+QString::number(var + 1)+body+getBwlVPX(var + 1)+footer+"vp9"+final);
             }
             // ui->textHM->setText(hmbwl);
             // ui->textVP9->setText(vp9bwl);
@@ -390,10 +418,10 @@ void Results::getParametersFile(int input, int env){
         if (env == 2)
         {
             for (int var = 0; var < 3; ++var) {
-                writeFile("hmlss"+QString::number(var)+".sh",header+getLssHM(var + 1)+footer);
+                writeFile("hmlss"+QString::number(var)+".sh",header+"lss"+QString::number(var + 1)+body+getLssHM(var + 1)+footer+"hm"+final);
             }
             for (int var = 0; var < 3; ++var) {
-                writeFile("vpxlss"+QString::number(var)+".sh",header+getLssVPX(var + 1)+footer);
+                writeFile("vpxlss"+QString::number(var)+".sh",header+"lss"+QString::number(var + 1)+body+getLssVPX(var + 1)+footer+"vp9"+final);
             }
             // ui->textHM->setText(hmlss);
             // ui->textVP9->setText(vp9lss);
@@ -401,7 +429,7 @@ void Results::getParametersFile(int input, int env){
         if (env == 3)
         {
             for (int var = 0; var < 2; ++var) {
-                writeFile("hmuhd"+QString::number(var)+".sh",header+getUhdHM(var + 1)+footer);
+                writeFile("hmuhd"+QString::number(var)+".sh",header+"uhd"+QString::number(var + 1)+body+getUhdHM(var + 1)+footer+"hm"+final);
             }
             // ui->textHM->setText(hmuhd);
             // ui->textVP9->setText(vp9uhd);
@@ -413,10 +441,10 @@ void Results::getParametersFile(int input, int env){
         if (env == 0)
         {
             for (int var = 0; var < 4; ++var) {
-                writeFile("tgrt"+QString::number(var)+".sh",header+getRtTG(var + 1)+footer);
+                writeFile("tgrt"+QString::number(var)+".sh",header+"rt"+QString::number(var + 1)+body+getRtTG(var + 1)+footer+"tg"+final);
             }
             for (int var = 0; var < 4; ++var) {
-                writeFile("vpxrt"+QString::number(var)+".sh",header+getRtVPX(var + 1)+footer);
+                writeFile("vpxrt"+QString::number(var)+".sh",header+"rt"+QString::number(var + 1)+body+getRtVPX(var + 1)+footer+"vp9"+final);
             }
             // ui->textTuring->setText(tgrt);
             // ui->textVP9->setText(vp9rt);
@@ -424,10 +452,10 @@ void Results::getParametersFile(int input, int env){
         if (env == 1)
         {
             for (int var = 0; var < 4; ++var) {
-                writeFile("tgbwl"+QString::number(var)+".sh",header+getBwlTG(var + 1)+footer);
+                writeFile("tgbwl"+QString::number(var)+".sh",header+"bwl"+QString::number(var + 1)+body+getBwlTG(var + 1)+footer+"tg"+final);
             }
             for (int var = 0; var < 4; ++var) {
-                writeFile("vpxbwl"+QString::number(var)+".sh",header+getBwlVPX(var + 1)+footer);
+                writeFile("vpxbwl"+QString::number(var)+".sh",header+"bwl"+QString::number(var + 1)+body+getBwlVPX(var + 1)+footer+"vp9"+final);
             }
             // ui->textTuring->setText(tgbwl);
             // ui->textVP9->setText(vp9bwl);
@@ -436,7 +464,7 @@ void Results::getParametersFile(int input, int env){
         {
             // TG is not available for LSS
             for (int var = 0; var < 3; ++var) {
-                writeFile("vpxlss"+QString::number(var)+".sh",header+getLssVPX(var + 1)+footer);
+                writeFile("vpxlss"+QString::number(var)+".sh",header+"lss"+QString::number(var + 1)+body+getLssVPX(var + 1)+footer+"vp9"+final);
             }
             // ui->textTuring->setText(tglss);
             // ui->textVP9->setText(vp9lss);
@@ -444,7 +472,7 @@ void Results::getParametersFile(int input, int env){
         if (env == 3)
         {
             for (int var = 0; var < 2; ++var) {
-                writeFile("tguhd"+QString::number(var)+".sh",header+getUhdTG(var + 1)+footer);
+                writeFile("tguhd"+QString::number(var)+".sh",header+"uhd"+QString::number(var + 1)+body+getUhdTG(var + 1)+footer+"tg"+final);
             }
             // VPX for UHD is not available
             // ui->textTuring->setText(tguhd);
@@ -457,13 +485,13 @@ void Results::getParametersFile(int input, int env){
         if (env == 0)
         {
             for (int var = 0; var < 3; ++var) {
-                writeFile("hmrt"+QString::number(var)+".sh",header+getRtHM(var + 1)+footer);
+                writeFile("hmrt"+QString::number(var)+".sh",header+"rt"+QString::number(var + 1)+body+getRtHM(var + 1)+footer+"hm"+final);
             }
             for (int var = 0; var < 4; ++var) {
-                writeFile("tgrt"+QString::number(var)+".sh",header+getRtTG(var + 1)+footer);
+                writeFile("tgrt"+QString::number(var)+".sh",header+"rt"+QString::number(var + 1)+body+getRtTG(var + 1)+footer+"tg"+final);
             }
             for (int var = 0; var < 4; ++var) {
-                writeFile("vpxrt"+QString::number(var)+".sh",header+getRtVPX(var + 1)+footer);
+                writeFile("vpxrt"+QString::number(var)+".sh",header+"rt"+QString::number(var + 1)+body+getRtVPX(var + 1)+footer+"vp9"+final);
             }
             // ui->textHM->setText(hmrt);
             // ui->textTuring->setText(tgrt);
@@ -472,13 +500,13 @@ void Results::getParametersFile(int input, int env){
         if (env == 1)
         {
             for (int var = 0; var < 3; ++var) {
-                writeFile("hmbwl"+QString::number(var)+".sh",header+getBwlHM(var + 1)+footer);
+                writeFile("hmbwl"+QString::number(var)+".sh",header+"bwl"+QString::number(var + 1)+body+getBwlHM(var + 1)+footer+"hm"+final);
             }
             for (int var = 0; var < 4; ++var) {
-                writeFile("tgbwl"+QString::number(var)+".sh",header+getBwlTG(var + 1)+footer);
+                writeFile("tgbwl"+QString::number(var)+".sh",header+"bwl"+QString::number(var + 1)+body+getBwlTG(var + 1)+footer+"tg"+final);
             }
             for (int var = 0; var < 4; ++var) {
-                writeFile("vpxbwl"+QString::number(var)+".sh",header+getBwlVPX(var + 1)+footer);
+                writeFile("vpxbwl"+QString::number(var)+".sh",header+"bwl"+QString::number(var + 1)+body+getBwlVPX(var + 1)+footer+"vp9"+final);
             }
             // ui->textHM->setText(hmbwl);
             // ui->textTuring->setText(tgbwl);
@@ -487,10 +515,10 @@ void Results::getParametersFile(int input, int env){
         if (env == 2)
         {
             for (int var = 0; var < 3; ++var) {
-                writeFile("hmlss"+QString::number(var)+".sh",header+getLssHM(var + 1)+footer);
+                writeFile("hmlss"+QString::number(var)+".sh",header+"lss"+QString::number(var + 1)+body+getLssHM(var + 1)+footer+"hm"+final);
             }
             for (int var = 0; var < 3; ++var) {
-                writeFile("vpxlss"+QString::number(var)+".sh",header+getLssVPX(var + 1)+footer);
+                writeFile("vpxlss"+QString::number(var)+".sh",header+"lss"+QString::number(var + 1)+body+getLssVPX(var + 1)+footer+"vp9"+final);
             }
             // ui->textHM->setText(hmlss);
             // ui->textTuring->setText(tglss);
@@ -499,10 +527,10 @@ void Results::getParametersFile(int input, int env){
         if (env == 3)
         {
             for (int var = 0; var < 2; ++var) {
-                writeFile("hmuhd"+QString::number(var)+".sh",header+getUhdHM(var + 1)+footer);
+                writeFile("hmuhd"+QString::number(var)+".sh",header+"uhd"+QString::number(var + 1)+body+getUhdHM(var + 1)+footer+"hm"+final);
             }
             for (int var = 0; var < 2; ++var) {
-                writeFile("tguhd"+QString::number(var)+".sh",header+getUhdTG(var + 1)+footer);
+                writeFile("tguhd"+QString::number(var)+".sh",header+"uhd"+QString::number(var + 1)+body+getUhdTG(var + 1)+footer+"tg"+final);
             }
             // ui->textHM->setText(hmuhd);
             // ui->textTuring->setText(tguhd);
