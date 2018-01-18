@@ -23,13 +23,13 @@ QString Results::getRtHM(int what){
     QString value = "";
     switch(what){
         case 1:
-            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_randomaccess_main.cfg";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_randomaccess_main.cfg -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}_${PRESET}.txt";
             break;
         case 2:
-            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_randomaccess_main10.cfg";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_randomaccess_main10.cfg -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}_${PRESET}.txt";
             break;
         case 3:
-            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_randomaccess_main_rext.cfg";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_randomaccess_main_rext.cfg -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}_${PRESET}.txt";
             break;
         default:
             break;
@@ -41,16 +41,16 @@ QString Results::getRtVPX(int what){
     QString value = "";
     switch(what){
         case 1:
-            value = "vpxenc --codec=vp9 -rt";
+            value = "vpxenc --codec=vp9 -rt -o ./${NAME}_${PRESET}.webm ./$NAME.y4m 2> ./$NAME.txt";
             break;
         case 2:
-            value = "vpxenc --codec=vp9 -rt --kf-max-dist='16'";
+            value = "vpxenc --codec=vp9 -rt --kf-max-dist='16' -o ./${NAME}_${PRESET}.webm ./$NAME.y4m 2> ./$NAME.txt";
             break;
         case 3:
-            value = "vpxenc --codec=vp9 -rt --target-bitrate='3000' --max-q='32'";
+            value = "vpxenc --codec=vp9 -rt --target-bitrate='3000' --max-q='32' -o ./${NAME}_${PRESET}.webm ./$NAME.y4m 2> ./$NAME.txt";
             break;
         case 4:
-            value = "vpxenc --codec=vp9 -rt --max-q='32' --kf-max-dist='8'";
+            value = "vpxenc --codec=vp9 -rt --max-q='32' --kf-max-dist='8' -o ./${NAME}_${PRESET}.webm ./$NAME.y4m 2> ./$NAME.txt";
             break;
         default:
             break;
@@ -62,16 +62,16 @@ QString Results::getRtTG(int what){
     QString value = "";
     switch(what){
         case 1:
-            value = "turing --speed fast --max-gop-n 16 --rdoq";
+            value = "turing encode --speed fast --max-gop-n 16 --rdoq";
             break;
         case 2:
-            value = "turing --speed fast --bitrate 1000 --max-gop-n 64 --max-gop-m 1 --rdoq";
+            value = "turing encode --speed fast --bitrate 1000 --max-gop-n 64 --max-gop-m 1 --rdoq";
             break;
         case 3:
-            value = "turing --speed fast --bitrate 2500 --qp 32";
+            value = "turing encode --speed fast --bitrate 2500 --qp 32";
             break;
         case 4:
-            value = "turing --speed fast --max-gop-m 8 --max-gop-n 64";
+            value = "turing encode --speed fast --max-gop-m 8 --max-gop-n 64";
             break;
         default:
             break;
@@ -85,13 +85,13 @@ QString Results::getBwlHM(int what){
     QString value = "";
     switch(what){
         case 1:
-            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_intra_high_throughput_rext.cfg --TargetBitrate 500 -o ./${NAME}.yuv -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}.txt";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_intra_high_throughput_rext.cfg --TargetBitrate 500 -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}_${PRESET}.txt";
             break;
         case 2:
-            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_P_main.cfg -o ./${NAME}.yuv -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}.txt";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_P_main.cfg -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}_${PRESET}.txt";
             break;
         case 3:
-            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main.cfg -o ./${NAME}.yuv -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}.txt";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main.cfg -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}_${PRESET}.txt";
             break;
         default:
             break;
@@ -104,16 +104,16 @@ QString Results::getBwlVPX(int what){
     QString value = "";
     switch(what){
         case 1:
-            value = "vpxenc --codec=vp9 --end-usage=3 --cq-level=52 --kf-max-dist=100";
+            value = "vpxenc --codec=vp9 --end-usage=3 --cq-level=52 --kf-max-dist=100 -o ./${NAME}_${PRESET}.webm ./$NAME.y4m 2> ./$NAME.txt";
             break;
         case 2:
-            value = "vpxenc --codec=vp9 --end-usage=2 --passes=2 --target-bitrate=300 --kf-max-dist=8";
+            value = "vpxenc --codec=vp9 --end-usage=2 --passes=2 --target-bitrate=300 --kf-max-dist=8 -o ./${NAME}_${PRESET}.webm ./$NAME.y4m 2> ./$NAME.txt";
             break;
         case 3:
-            value = "vpxenc --codec=vp9 --target-bitrate=500 --best --min-q=16 --max-q=60";
+            value = "vpxenc --codec=vp9 --target-bitrate=500 --best --min-q=16 --max-q=60 -o ./${NAME}_${PRESET}.webm ./$NAME.y4m 2> ./$NAME.txt";
             break;
         case 4:
-            value = "vpxenc --codec=vp9 --end-usage=vbr --kf-min-dist=0 --kf-max-dist=360 --max-q=63";
+            value = "vpxenc --codec=vp9 --end-usage=vbr --kf-min-dist=0 --kf-max-dist=360 --max-q=63 -o ./${NAME}_${PRESET}.webm ./$NAME.y4m 2> ./$NAME.txt";
             break;
         default:
             break;
@@ -149,10 +149,10 @@ QString Results::getUhdHM(int what){
     QString value = "";
     switch(what){
         case 1:
-            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main.cfg -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}.txt";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main.cfg -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}_${PRESET}.txt";
             break;
         case 2:
-            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main.cfg --IntraPeriod 16 -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}.txt";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main.cfg --IntraPeriod 16 -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}_${PRESET}.txt";
             break;
         default:
             break;
@@ -187,13 +187,13 @@ QString Results::getLssHM(int what){
     QString value = "";
     switch(what){
         case 1:
-            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main.cfg --TransquantBypassEnable true --CUTransquantBypassFlagForce true -o ./${NAME}.yuv -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}.txt";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main.cfg --TransquantBypassEnable true --CUTransquantBypassFlagForce true -o ./${NAME}.yuv -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}_${PRESET}.txt";
             break;
         case 2:
-            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main10.cfg --TransquantBypassEnable true --CUTransquantBypassFlagForce true -o ./${NAME}.yuv -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}.txt";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main10.cfg --TransquantBypassEnable true --CUTransquantBypassFlagForce true -o ./${NAME}.yuv -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}_${PRESET}.txt";
             break;
         case 3:
-            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main_rext.cfg --TransquantBypassEnable true --CUTransquantBypassFlagForce true -o ./${NAME}.yuv -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}.txt";
+            value = "TAppEncoderStatic -c /hm-4891/cfg/encoder_lowdelay_main_rext.cfg --TransquantBypassEnable true --CUTransquantBypassFlagForce true -o ./${NAME}.yuv -i ./$NAME.y4m -b ./${NAME}_${PRESET}.hevc -wdt $wdt -hgt $hgt -fr $framerate -f $length > ${NAME}_${PRESET}.txt";
             break;
         default:
             break;
@@ -209,10 +209,10 @@ QString Results::getLssVPX(int what){
             value = "vpxenc --codec=vp9 --psnr -o ./${NAME}_${PRESET}.webm --lossless='1'' --best ./$NAME.y4m 2> ./${NAME}_${PRESET}.txt";
             break;
         case 2:
-            value = "vpxenc --codec=vp9 --psnr -o ./${NAME}_lss2.webm --lossless='1' --good --max-q='32' ./$NAME.y4m 2> ./$NAME.txt";
+            value = "vpxenc --codec=vp9 --psnr -o ./${NAME}_lss2.webm --lossless='1' --good --max-q='32' ./$NAME.y4m 2> ./${NAME}_${PRESET}.txt";
             break;
         case 3:
-            value = "vpxenc --codec=vp9 --psnr -o ./${NAME}_lss3.webm --lossless='1' --best --max-q='32' --kf-max-dist='4' ./$NAME.y4m 2> ./$NAME.txt";
+            value = "vpxenc --codec=vp9 --psnr -o ./${NAME}_lss3.webm --lossless='1' --best --max-q='32' --kf-max-dist='4' ./$NAME.y4m 2> ./${NAME}_${PRESET}.txt";
             break;
         default:
             break;
@@ -240,7 +240,7 @@ void Results::getParametersFile(int input, int env){
     QString header = "#!/bin/bash\n"
     "function funcion()\n"
     "{\n"
-    " declare -A videos=( [\"Netflix_Boat_4096x2160_60fps_10bit_420\"]=\"300\" [\"Netflix_BoxingPractice_4096x2160_60fps_10bit_420\"]=\"254\" [\"Netflix_Crosswalk_4096x2160_60fps_10bit_420\"]=\"300\" [\"Netflix_FoodMarket2_4096x2160_60fps_10bit_420 \"]=\"300\" [\"Netflix_FoodMarket_4096x2160_60fps_10bit_420\"]=\"600\" [\"Netflix_Narrator_4096x2160_60fps_10bit_420\"]=\"300\" [\"Netflix_RitualDance_4096x2160_60fps_10bit_420 \"]=\"600\" [\"Netflix_SquareAndTimelapse_4096x2160_60fps_10bit_420\"]=\"600\" [\"Netflix_Tango_4096x2160_60fps_10bit_420\"]=\"294\" [\"Netflix_TunnelFlag_4096x2160_60fps_10bit_420\"]=\"600\" )\n"
+    " declare -A videos=( [\"akiyo_cif\"]=\"300\" [\"bowing_cif\"]=\"300\" [\"bridge_close_cif\"]=\"2101\" [\"bridge_far_cif\"]=\"2101\" [\"bus_cif\"]=\"150\" [\"carphone_qcf\"]=\"382\" [\"city_4cif\"]=\"600\" [\"claire_qcif\"]=\"494\" [\"coastguard_cif\"]=\"300\" [\"container_cif\"]=\"300\" [\"crew_4cif\"]=\"600\" [\"deadline_cif\"]=\"1374\" [\"flower_cif\"]=\"250\" [\"football_cif\"]=\"260\" [\"foreman_cif\"]=\"300\" [\"grandma_qcif\"]=\"870\" [\"harbour_4cif\"]=\"600\" [\"highway_cif\"]=\"2000\" [\"husky_cif\"]=\"250\" [\"ice_4cif\"]=\"480\" [\"mobile_cif\"]=\"300\" [\"news_cif\"]=\"300\" [\"panphlet_cif\"]=\"300\" [\"paris_cif\"]=\"1065\" [\"salesman_qcif\"]=\"449\" [\"sign_irene_cif\"]=\"540\" [\"suzie_qcif\"]=\"150\" [\"tennis_sif\"]=\"150\" [\"waterfall_cif\"]=\"260\" [\"720p50_mobcal_ter\"]=\"504\" [\"720p50_parkrun_ter\"]=\"504\" [\"720p50_shields_ter\"]=\"504\" [\"720p5994_stockholm_ter\"]=\"604\" [\"ducks_take_off_444_720p50\"]=\"500\" [\"FourPeople_1280x720_60\"]=\"600\" [\"in_to_tree_444_720p50\"]=\"500\" [\"Johnny_1280x720_60\"]=\"600\" [\"KristenAndSara_1280x720_60\"]=\"600\" [\"old_town_cross_444_720p50\"]=\"500\" [\"park_joy_444_720p50\"]=\"500\" [\"sintel_trailer_2k_720p24\"]=\"1253\" [\"vidyo1_720p_60fps\"]=\"600\" [\"vidyo3_720p_60fps\"]=\"600\" [\"vidyo4_720p_60fps\"]=\"600\" [\"Netflix_Boat_4096x2160_60fps_10bit_420\"]=\"300\" [\"Netflix_BoxingPractice_4096x2160_60fps_10bit_420\"]=\"254\" [\"Netflix_Crosswalk_4096x2160_60fps_10bit_420\"]=\"300\" [\"Netflix_FoodMarket2_4096x2160_60fps_10bit_420 \"]=\"300\" [\"Netflix_FoodMarket_4096x2160_60fps_10bit_420\"]=\"600\" [\"Netflix_Narrator_4096x2160_60fps_10bit_420\"]=\"300\" [\"Netflix_RitualDance_4096x2160_60fps_10bit_420 \"]=\"600\" [\"Netflix_SquareAndTimelapse_4096x2160_60fps_10bit_420\"]=\"600\" [\"Netflix_Tango_4096x2160_60fps_10bit_420\"]=\"294\" [\"Netflix_TunnelFlag_4096x2160_60fps_10bit_420\"]=\"600\" )\n"
     " PRESET=\"";
     QString body = "\"\n"
     " # DIMENSIONS\n"
